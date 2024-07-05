@@ -25,8 +25,10 @@ func main() {
 		var current_url string = fmt.Sprintf("%s%s%d", ROOTURL, stats_slug, offset)
 
 		// request the page
-		//var page_html = src.Request_handler(current_url)
-		var _ = src.Request_handler(current_url)
+		var page_html = src.Request_handler(current_url)
+
+		// scrape the page
+		src.Stats_scrape(page_html)
 
 		// increase offset by 75
 		offset += 75
