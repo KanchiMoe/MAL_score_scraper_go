@@ -28,11 +28,20 @@ func Logic_main() {
 			log.Panic().Err(err).Msg("Error returned from stats page scrape")
 		}
 		count_list_of_members := len(list_of_members)
-		log.Debug().Int("count", count_list_of_members).Msg("No. of members")
+		log.Trace().Int("count", count_list_of_members).Msg("No. of members returned from scrape")
+		if count_list_of_members != 75 {
+			log.Error().Int("count", count_list_of_members).Msg("No of members not 75")
+			return
+		}
 		//log.Trace().Interface("contents", list_of_members).Msg("List of members") - not working
 		//fmt.Println(list_of_members) - placeholder
 
 		// check to see if these are in the db already
+		db_connection := DB()
+
+		for _, member_object := range list_of_members {
+			db_results, user_in_db := sql_is_in_db(db_connection, member_object)
+		}
 
 		// increase offset by 75
 		offset += 75
