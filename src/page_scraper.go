@@ -10,6 +10,7 @@ import (
 )
 
 type mal_member struct {
+	id       int
 	username string
 	score    string
 	status   string
