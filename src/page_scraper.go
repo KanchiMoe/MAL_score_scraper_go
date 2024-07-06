@@ -16,7 +16,7 @@ type mal_member struct {
 	eps_seen string
 }
 
-func Stats_scrape(page_html *html.Node) (member mal_member, err error) {
+func Stats_scrape(page_html *html.Node) (members []mal_member, err error) {
 	var stats_table_xpath string = "/html/body/div[1]/div[2]/div[3]/div[2]/table/tbody/tr/td[2]/div[1]/table[2]/tbody/tr"
 	var member_name_xpath string = "/td[1]/div[2]/a"
 	var member_score_xpath string = "/td[2]"
@@ -26,7 +26,7 @@ func Stats_scrape(page_html *html.Node) (member mal_member, err error) {
 	member_row, err := htmlquery.QueryAll(page_html, stats_table_xpath)
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting stats table")
-		return member, err
+		return members, err
 	}
 
 	for _, element := range member_row[1:] {
@@ -35,7 +35,7 @@ func Stats_scrape(page_html *html.Node) (member mal_member, err error) {
 		name_node, err := htmlquery.Query(element, member_name_xpath)
 		if err != nil {
 			log.Error().Err(err).Msg("Error getting member name from stats table")
-			return member, err
+			return members, err
 		}
 		MAL_username_string := htmlquery.InnerText(name_node)
 
@@ -43,14 +43,14 @@ func Stats_scrape(page_html *html.Node) (member mal_member, err error) {
 		score_node, err := htmlquery.Query(element, member_score_xpath)
 		if err != nil {
 			log.Error().Err(err).Msg("Error getting score from stats table")
-			return member, err
+			return members, err
 		}
 		MAL_score_string := htmlquery.InnerText(score_node)
 
 		status_node, err := htmlquery.Query(element, member_status_xpath)
 		if err != nil {
 			log.Error().Err(err).Msg("Error getting watch status from stats table")
-			return member, err
+			return members, err
 		}
 		MAL_status_string := htmlquery.InnerText(status_node)
 
@@ -58,7 +58,7 @@ func Stats_scrape(page_html *html.Node) (member mal_member, err error) {
 		eps_node, err := htmlquery.Query(element, member_eps_seen_xpath)
 		if err != nil {
 			log.Error().Err(err).Msg("Error getting eps seen from stats table")
-			return member, err
+			return members, err
 		}
 		raw_eps_seen_string := htmlquery.InnerText(eps_node)
 
@@ -78,12 +78,10 @@ func Stats_scrape(page_html *html.Node) (member mal_member, err error) {
 		// 	Str("eps seen", MAL_eps_seen_string).
 		// 	Msg("Member")
 
-		member.username = MAL_username_string
-		member.score = MAL_score_string
-		member.status = MAL_status_string
-		member.eps_seen = MAL_eps_seen_string
+		members = append(members, mal_member{username: MAL_username_string, score: MAL_score_string, status: MAL_status_string, eps_seen: MAL_eps_seen_string})
+
 	}
 
-	return member, nil
+	return members, nil
 
 }
