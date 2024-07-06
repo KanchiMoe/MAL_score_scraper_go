@@ -20,6 +20,7 @@ require (
 	github.com/antchfx/xpath v1.3.1 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/jackc/pgx/v5 v5.6.0
+	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	golang.org/x/sys v0.21.0 // indirect
