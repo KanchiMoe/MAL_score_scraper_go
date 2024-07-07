@@ -38,9 +38,15 @@ func Logic_main() {
 
 		// check to see if these are in the db already
 		db_connection := DB()
-
 		for _, member_object := range list_of_members {
 			db_results, user_in_db := sql_is_in_db(db_connection, member_object)
+
+			// check to see if their ID is in the db
+			if !user_in_db {
+				sql_is_id_in_db(db_connection, db_results)
+			}
+
+			panic("stop")
 		}
 
 		// increase offset by 75
