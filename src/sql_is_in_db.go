@@ -26,7 +26,7 @@ func sql_is_in_db(db_connection *pgxpool.Pool, member_object mal_member) (db_res
 	if err != nil {
 		log.Info().Str("username", username).Msg("Username NOT in database")
 		user_in_db = false
-		return mal_member{}, user_in_db
+		return mal_member{username: username}, user_in_db
 	}
 
 	// debug logging
