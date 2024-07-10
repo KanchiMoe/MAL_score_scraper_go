@@ -43,10 +43,12 @@ func Logic_main() {
 
 			// check to see if their ID is in the db
 			if !user_in_db {
-				sql_is_id_in_db(db_connection, db_results)
+				get_member_id_from_mal(db_results)
+
+				//is_id_in_db(db_connection, db_results)
 			}
 
-			panic("stop")
+			//panic("stop")
 		}
 
 		// increase offset by 75
