@@ -36,7 +36,7 @@ func Request_handler(requested_url string) *html.Node {
 }
 
 func get_url(requested_url string) (status_code int, html_node *html.Node, err error) {
-	log.Info().Msg("Requesting url: " + requested_url)
+	log.Info().Str("url", requested_url).Msg("Requesting MAL url")
 
 	// request the url
 	resp, err := http.Get(requested_url)
