@@ -41,11 +41,29 @@ func Logic_main() {
 		for _, member_object := range list_of_members {
 			db_results, user_in_db := sql_is_in_db(db_connection, member_object)
 
+			// username not in db
 			// check to see if their ID is in the db
 			if !user_in_db {
-				get_member_id_from_mal(db_results)
 
-				//is_id_in_db(db_connection, db_results)
+				// get the member id first
+				member_id, err := get_member_id_from_mal(db_results)
+				if err != nil {
+					log.Error().Err(err).Msg("Error trying to get member ID")
+				}
+
+				// check if the id is in the db
+				_, id_in_db := sql_is_id_in_db(db_connection, member_id)
+
+				// the ID is in the db
+				if id_in_db {
+					// actions
+					continue
+				}
+
+				// the ID is not in the db
+				sql_new_to_db(db_connection, member_id, member_object)
+
+				//panic("stop")
 			}
 
 			//panic("stop")
